@@ -26,7 +26,7 @@ function getAccuRankerKeywords () {
   rankings.forEach(ranking => {
     keywords.push({
       'keyword': ranking.keyword,
-      'rank': ranking.ranks[0].rank
+      'rank': ranking.ranks.length > 0 ? ranking.ranks[0].rank : null
     });
   });
 
@@ -177,8 +177,13 @@ function getRankings () {
     }
 
     sheet.insertColumnBefore(rankColumnIndex);
-    
-    var formattedDate = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'MMMyy');
+
+    // Get the current date
+    var currentDate = new Date();
+    // Get the previous month's date
+    var previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+    // Format the previous month's date
+    var formattedDate = Utilities.formatDate(previousMonthDate, Session.getScriptTimeZone(), 'MMMyy');
 
     // Generate a title cell
     var titleCell = sheet.getRange(1, rankColumnIndex);
